@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" class="loading">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daniel Halper — product engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main id="stage">
+  <!-- no src: app.js downloads the file in full, then hands it over as a blob -->
+  <video id="plate" muted playsinline preload="auto"></video>
+
+  <header id="hud">
+    <span class="brand"><i></i>DANIEL HALPER <b>&middot;</b> PRODUCT ENGINEER <b>&middot;</b> LOS ANGELES</span>
+  </header>
+
+  <!-- the popup dealt over a figure the claw just put down -->
+  <a id="card" href="#" target="_blank" rel="noopener">
+    <span class="tag" id="c-tag"></span>
+    <h2 id="c-title"></h2>
+    <p class="sub" id="c-sub"></p>
+    <p class="body" id="c-body"></p>
+    <p class="hi" id="c-hi"></p>
+    <span class="go" id="c-go"></span>
+  </a>
+
+  <!-- everything that did not come out of the machine -->
+  <section id="grid" aria-label="More projects">
+    <div id="gtrack"></div>
+  </section>
+
+  <section id="contact">
+    <div class="panel">
+      <h2>Get in touch.</h2>
+      <p>Happy to talk product, AI systems, or anything on this page. Email is fastest.</p>
+      <div class="links">
+        <a href="mailto:danihalp@me.com"><b>&#8599;</b> danihalp@me.com</a>
+        <a href="https://linkedin.com/in/daniel-halper" target="_blank" rel="noopener"><b>&#8599;</b> linkedin/daniel-halper</a>
+        <a href="https://github.com/danielhalper" target="_blank" rel="noopener"><b>&#8599;</b> github/danielhalper</a>
+      </div>
+    </div>
+  </section>
+
+  <div id="marquee"><div class="run"><span></span><span></span></div></div>
+
+  <footer id="cue">
+    <ol id="ticks"></ol>
+    <ol id="dots"><li></li><li></li><li></li></ol>
+    <p id="cue-label"></p>
+  </footer>
+
+  <span id="school">STANFORD <b>&middot;</b> HACK REACTOR</span>
+</main>
+
+<div id="loader">
+  <!-- the take is pulled out of the machine: the claw rides down as the file
+       arrives, closes on it at 100%, and lifts on the way out -->
+  <div class="rig">
+    <span class="rail"></span>
+    <span class="lamps"><i></i><i></i><i></i></span>
+    <span class="cable"></span>
+    <div class="hang">
+      <div class="swing">
+        <svg viewBox="0 0 64 88" aria-hidden="true">
+          <rect class="shaft" x="28" y="0" width="8" height="15" rx="3"/>
+          <rect class="hub" x="19" y="13" width="26" height="11" rx="5"/>
+          <path class="prong l" d="M25 24 C 19 40, 13 54, 11 70"/>
+          <path class="prong m" d="M32 24 C 32 42, 32 56, 32 72"/>
+          <path class="prong r" d="M39 24 C 45 40, 51 54, 53 70"/>
+          <circle class="prize" cx="32" cy="66" r="8.5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="read">
+    <div id="bar"></div>
+    <span id="pct">0%</span>
+  </div>
+  <p class="cap">Pulling the take out of the machine <b id="mb"></b></p>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
