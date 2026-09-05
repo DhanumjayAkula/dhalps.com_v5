@@ -211,8 +211,20 @@ function place() {
   const toyHead = fy + TOY.head * h;
 
   const cw = card.offsetWidth, ch = card.offsetHeight;
-  const left = clamp(toyX - cw / 2, 20, vw - cw - 20);
-  const top  = Math.max(toyHead - ch - 34, 86);
+  const GAP = 30;                    // clear air between the card and the head
+
+  let left = clamp(toyX - cw / 2, 20, vw - cw - 20);
+  let top  = toyHead - ch - GAP;
+
+  /* If the card is taller than the room above the figure — a short window, a
+     phone on its side — the old code clamped it downwards, which parked it on
+     top of the very thing it is pointing at. Stand it beside the figure
+     instead: the toy stays visible, which is the whole point of the shot. */
+  if (top < 84) {
+    left = toyX - cw - 46;
+    if (left < 20) left = clamp(toyX + 46, 20, vw - cw - 20);   // …or on its other side
+    top  = clamp(toyHead - ch * 0.45, 84, vh - ch - 84);
+  }
 
   card.style.left = `${left.toFixed(0)}px`;
   card.style.top  = `${top.toFixed(0)}px`;

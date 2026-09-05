@@ -678,23 +678,32 @@ body {
   #card .hi { font-size: 15px; margin-top: 12px; }
   #card .go { font-size: 11.5px; margin-top: 15px; }
 
-  #grid { left: 4%; right: 4%; top: 31%; bottom: 11.5%; padding: 14px 8px 10px; }
+  /* The wheel is spent on beats, so there is nothing to scroll inside the set:
+     all six have to fit the screen. Two columns, three rows, and each card cut
+     back to what still carries at that size — the label, the name, and the one
+     number worth reading. The role line goes; it is the first thing to wrap to
+     two lines and the last thing anyone reads. */
+  #grid { left: 4%; right: 4%; top: 28%; bottom: 15%; padding: 15px 8px 10px; }
   .gpage {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 11px;
-    padding-right: 11px;
+    gap: 10px;
+    padding-right: 10px;
   }
-  .gcard { padding: 12px 11px 10px; border-radius: 16px; transform: translateX(-60px) scale(.9); }
+  .gcard {
+    padding: 11px 11px 10px;
+    border-radius: 16px;
+    justify-content: center;
+    transform: translateX(-60px) scale(.9);
+  }
   .gcard.in { transform: none; }
-  .gcard .body, .gcard .go { display: none; }
-  .gcard .tag { font-size: 8px; padding: 4px 7px; }
-  .gcard h3 { font-size: 12.5px; margin: 8px 0 2px; }
-  .gcard .sub { font-size: 9px; }
-  .gcard .hi { font-size: 12px; margin-top: 9px; }
-  .gcard .av { width: 32px; height: 32px; top: -10px; right: 8px; }
+  .gcard .sub, .gcard .body, .gcard .go { display: none; }
+  .gcard .tag { font-size: 7.5px; padding: 3px 7px; letter-spacing: .08em; }
+  .gcard h3 { font-size: 12px; line-height: 1.15; margin: 9px 0 0; }
+  .gcard .hi { font-size: 11.5px; line-height: 1.25; margin-top: 8px; }
+  .gcard .av { width: 30px; height: 30px; top: -9px; right: 8px; }
 
-  #contact { left: 5%; right: 5%; top: 31%; bottom: 11.5%; align-items: center; }
+  #contact { left: 5%; right: 5%; top: 27%; bottom: 15%; align-items: center; }
   #contact .panel {
     width: 100%;
     padding: 26px 20px 24px;
@@ -712,7 +721,7 @@ body {
     font-size: 12px;
   }
 
-  #marquee { left: 4%; right: 4%; bottom: 5.5%; height: 30px; }
+  #marquee { left: 4%; right: 4%; bottom: 9%; height: 28px; }
   #marquee .run span { font-size: 9.5px; padding-right: 24px; }
 
   #school { display: none; }
