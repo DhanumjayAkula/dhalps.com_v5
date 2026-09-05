@@ -452,6 +452,25 @@ const pct = document.getElementById('pct');
 const mb  = document.getElementById('mb');
 let revealed = false;
 
+/* ---- turn your phone --------------------------------------------------------
+   The hint is in the loader for the whole wait (CSS only), and shows once more
+   over the page for three seconds after the hand-over. It is only ever built on
+   a portrait phone, and it leaves the moment the phone is turned rather than
+   sitting there contradicting itself. */
+const rotateTip = document.getElementById('rotate');
+const upright = matchMedia('(orientation: portrait) and (max-width: 900px)');
+let turnOff = 0;
+
+function hintTurn() {
+  if (!upright.matches) return;
+  rotateTip.classList.add('on');
+  clearTimeout(turnOff);
+  turnOff = setTimeout(() => rotateTip.classList.remove('on'), 3000);
+}
+upright.addEventListener('change', e => {
+  if (!e.matches) { clearTimeout(turnOff); rotateTip.classList.remove('on'); }
+});
+
 // one number drives the cable, the claw's travel and the bar
 function progress(p) {
   loader.style.setProperty('--p', p.toFixed(3));
@@ -472,7 +491,7 @@ function reveal() {
     loader.classList.add('gone');
     document.documentElement.classList.remove('loading');
   }, 620);
-  setTimeout(() => loader.remove(), 1300);
+  setTimeout(() => { loader.remove(); hintTurn(); }, 1300);
 }
 
 // hold until the video element has the first frame of the blob decoded, so the
