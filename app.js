@@ -157,6 +157,7 @@ const REWIND  = 1.6 * RATE;                            // …and keep the rewind
 const NUDGE   = 26;                                    // wheel delta that counts as one gesture
 const SETTLE  = 120;                                   // ms of quiet before the next gesture is taken
 
+const stage   = document.getElementById('stage');
 const plate   = document.getElementById('plate');
 const card    = document.getElementById('card');
 const hud     = document.getElementById('hud');
@@ -169,6 +170,20 @@ const contact = document.getElementById('contact');
 const marquee = document.getElementById('marquee');
 
 const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+
+/* A portrait phone shows about a quarter of a 16:9 frame, so it has to be told
+   which quarter. --fx is that choice, one number per beat, and because it is a
+   registered property the crop pans instead of cutting. Desktop never reads it:
+   object-position is only set inside the portrait query. */
+const narrow = matchMedia('(max-width: 820px) and (orientation: portrait)');
+const FOCUS = i => {
+  const b = BEATS[i];
+  if (b.stage > 0)     return 0.16;   // the machine has slid to the left edge
+  if (b.card !== -1)   return 0.78;   // a figure is standing on the right
+  return b.t > 26 ? 0.50 : 0.40;      // the machine, or the run inside it
+};
+const look = i => stage.style.setProperty('--fx', FOCUS(i));
+
 const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 
 // ---- the popup, parked over the figure ---------------------------------------
@@ -184,7 +199,7 @@ const goEl    = document.getElementById('c-go');
 // pinned to the figure rather than to a guessed screen position, and so the
 // scale-up starts from the figure's own feet.
 function place() {
-  if (innerWidth <= 820) {           // narrow: the card is centred under the toy
+  if (narrow.matches) {              // portrait: the card is a sheet, CSS places it
     card.style.left = card.style.top = '';
     return;
   }
@@ -324,6 +339,7 @@ function go(dir) {
 
 function drive() {
   stop();
+  look(beat);                        // the crop pans while the take runs
   const target = BEATS[beat].t;
   const gap = target - plate.currentTime;
 
@@ -384,6 +400,7 @@ function park() {
   // the mark and seeking back to it would show as a stutter
   if (Math.abs(plate.currentTime - BEATS[beat].t) > EPS) plate.currentTime = BEATS[beat].t;
   busy = false;
+  look(beat);
   light(BEATS[beat].card);
   applyStage(BEATS[beat].stage);
   cue(BEATS[beat].cue);
@@ -437,6 +454,7 @@ addEventListener('touchmove', e => {
 addEventListener('touchend', () => { touchY = null; });
 
 addEventListener('resize', place, { passive: true });
+narrow.addEventListener('change', place);
 
 // ---- loader -----------------------------------------------------------------
 /* The whole file is downloaded before the page is shown, and then handed to the
