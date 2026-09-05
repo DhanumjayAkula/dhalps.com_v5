@@ -123,8 +123,8 @@ const BEATS = [
   { t: 15.32, card: -1, stage: 0, cue: 'Next ^   one built alone, in 2026' },
   { t: 17.82, card: 2,  stage: 0, cue: 'Scroll ^   250 sites generated, 2 live' },
   { t: 19.52, card: -1, stage: 0, cue: 'Next ^   one more out of the machine' },
-  { t: 22.47, card: 3,  stage: 0, cue: 'Scroll ^   live on the Chrome Web Store' },
-  { t: 25.12, card: -1, stage: 0, cue: 'Coming up ^   9 more, from gym equipment to AI agents' },
+  { t: 22.57, card: 3,  stage: 0, cue: 'Scroll ^   live on the Chrome Web Store' },
+  
   
   
   { t: 38.34, card: -1, stage: 0, cue: 'One more scroll ^   the ones still in the cabinet' },
@@ -146,8 +146,14 @@ const TICK_OF_BEAT = i =>
 const ASPECT  = 16 / 9;
 const TOY     = { fx: 0.745, fy: 0.815, head: 0.61 };  // where a figure stands, in frame units
 const EPS     = 0.03;                                  // seconds; closer than this counts as parked
-const RATE    = 2;                                     // the take is cut slow for a scroll — run it up
-const REWIND  = 2 * RATE;                              // …and keep the rewind a shade faster than the playback
+/* 2.5, not 2, and the reason is the display: the take is 24fps, so at 2x the
+   browser has to present 48 frames a second onto a 60Hz screen — 48 does not
+   divide into 60, so frames get held for two refreshes and then one, which is
+   exactly the stutter that reads as "laggy". At 2.5x it presents 60fps: one new
+   frame per refresh on a 60Hz panel, two on a 120Hz one. Same footage, same
+   marks, even cadence. */
+const RATE    = 2.5;
+const REWIND  = 1.6 * RATE;                            // …and keep the rewind a shade faster than the playback
 const NUDGE   = 26;                                    // wheel delta that counts as one gesture
 const SETTLE  = 120;                                   // ms of quiet before the next gesture is taken
 

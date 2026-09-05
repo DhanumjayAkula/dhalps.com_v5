@@ -49,6 +49,11 @@ body {
   height: 100%;
   object-fit: cover;
   pointer-events: none;
+  /* keep the take on its own compositor layer so nothing above it can force a
+     repaint of the frame that is being presented */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 /* ---- hud ---- */
@@ -116,27 +121,33 @@ body {
      returns to, so scrolling back plays the arrival exactly backwards. */
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
   transform: translateX(-140px) scale(.64);
   transition:
     transform .54s cubic-bezier(.4, 0, .2, 1),
-    opacity .3s ease;
+    opacity .3s ease,
+    visibility 0s linear .55s;
 }
 #card.on {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
   transform: none;
   transition:
     transform .62s cubic-bezier(.18, .78, .28, 1),
-    opacity .26s linear;
+    opacity .26s linear,
+    visibility 0s;
 }
 /* the figure turns and walks off to the right; the card goes with it */
 #card.gone {
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
   transform: translateX(260px) translateY(70px) scale(.58) rotate(2deg);
   transition:
     transform .6s cubic-bezier(.45, 0, .72, .3),
-    opacity .3s ease .26s;
+    opacity .3s ease .26s,
+    visibility 0s linear .62s;
 }
 
 /* The glass edge: a 3px ring, cut out of a full-size gradient by a mask, so the
@@ -332,9 +343,10 @@ body {
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
-  transition: opacity .45s ease;
+  visibility: hidden;
+  transition: opacity .45s ease, visibility 0s linear .45s;
 }
-#grid.show { opacity: 1; pointer-events: auto; }
+#grid.show { opacity: 1; pointer-events: auto; visibility: visible; transition: opacity .45s ease, visibility 0s; }
 
 #gtrack {
   display: flex;
@@ -495,9 +507,10 @@ body {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity .45s ease;
+  visibility: hidden;
+  transition: opacity .45s ease, visibility 0s linear .45s;
 }
-#contact.show { opacity: 1; pointer-events: auto; }
+#contact.show { opacity: 1; pointer-events: auto; visibility: visible; transition: opacity .45s ease, visibility 0s; }
 #contact .panel {
   position: relative;
   width: min(820px, 100%);
@@ -599,9 +612,13 @@ body {
   align-items: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity .45s ease;
+  visibility: hidden;
+  transition: opacity .45s ease, visibility 0s linear .45s;
 }
-#marquee.show { opacity: 1; }
+#marquee.show { opacity: 1; visibility: visible; transition: opacity .45s ease, visibility 0s; }
+/* a ticker nobody can see must not keep the compositor awake */
+#marquee .run { animation-play-state: paused; }
+#marquee.show .run { animation-play-state: running; }
 #marquee .run {
   display: flex;
   white-space: nowrap;
@@ -803,22 +820,32 @@ body {
   min-width: 4ch;
 }
 .cap {
-  margin-top: 16px;
+  margin-top: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .92);
+}
+.cap i { font-style: normal; opacity: .5; margin: 0 4px; }
+.sub {
+  margin-top: 9px;
   font-family: var(--mono);
   font-size: 10.5px;
-  letter-spacing: .16em;
+  letter-spacing: .14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, .62);
+  color: rgba(255, 255, 255, .6);
 }
-.cap b {
+.sub b {
   font-weight: 500;
-  color: rgba(255, 255, 255, .8);
+  color: rgba(255, 255, 255, .78);
   font-variant-numeric: tabular-nums;
 }
 
 @media (max-width: 820px) {
   .rig { width: 150px; height: 200px; }
-  .cap { font-size: 9px; letter-spacing: .12em; }
+  .cap { font-size: 10px; letter-spacing: .1em; }
+  .sub { font-size: 9px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
